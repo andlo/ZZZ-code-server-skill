@@ -1,0 +1,13 @@
+dependencies:
+  # Pip dependencies on PyPI
+  python:
+    - ptvsd
+    - pyls
+    - python-language-server[all]
+    - jedi
+    - pylint
+    - bandit
+    - flake8
+    - pycodestyle
+    - pydocstyle
+    - mypy
