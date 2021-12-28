@@ -19,15 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from sys import platform
 from mycroft import MycroftSkill, intent_file_handler
 import os
-import tarfile
 import subprocess
 import signal
-import urllib.request
-import tarfile
-import platform
-from shutil import copyfile
-
-#from psutil import virtual_memory
 
 class CodeServer(MycroftSkill):
     def __init__(self):
@@ -35,14 +28,7 @@ class CodeServer(MycroftSkill):
 
     def initialize(self):
         self.log.info("Initialize code-server...")
-#        if (self.settings.get("workspace") is not True or
-#                self.settings.get("workspace") == ''):
-#            self.settings["workspace"] = str(self.config_core.get('data_dir') +
-#                                             '/' +
-##                                             self.config_core.get('skills', {})
- #                                            .get('msm', {})
- #                                            .get('directory'))#
-#
+
         if (self.settings.get("code-server installed") is not True or
                 self.settings.get("code-server installed") is None):
             self.install_code()
@@ -61,7 +47,7 @@ class CodeServer(MycroftSkill):
 
     @intent_file_handler('start.intent')
     def handle_code_start(self, message):
-        url = os.uname().nodename + " kolon 3000"
+        url = os.uname().nodename + ' ' + str(self.settings.get('portnum')) 
         if self.start_code():
             self.speak_dialog('code_started', data={"url": url})
         else:
@@ -69,7 +55,7 @@ class CodeServer(MycroftSkill):
 
     @intent_file_handler('restart.intent')
     def handle_code_restart(self, message):
-        url = os.uname().nodename + " kolon 3000"
+        url = os.uname().nodename + ' ' + str(self.settings.get('portnum')) 
         self.stop_code()
         if self.start_code():
             self.speak_dialog('code_started', data={"url": url})
@@ -77,7 +63,6 @@ class CodeServer(MycroftSkill):
     def stop_code(self):
         self.log.info("Stopping code-server")
         SafePath = self.file_system.path
- #       if self.settings.get("code_pid") is not None:
         try:
             os.killpg(self.settings.get("code_pid"), signal.SIGTERM)
         except Exception:
@@ -86,12 +71,9 @@ class CodeServer(MycroftSkill):
                                     preexec_fn=os.setsid,
                                     shell=True)
             proc.wait()
-        self.settings["theia_pid"] = None
+        self.settings["code_pid"] = None
         return True
- #   else:
- #           return False
-
- 
+  
     def start_code(self):
         if self.settings.get("code_pid)") is None:
             self.log.info("Starting code-server")
@@ -122,7 +104,6 @@ class CodeServer(MycroftSkill):
                                           cert + 
                                           telemetry +
                                           ' --force',
-#                                          ' >/dev/null 2>/dev/null ',
                                           cwd=SafePath,
                                           preexec_fn=os.setsid, shell=True)
             self.log.info('Code-server PID=' + str(proc.pid)) 
