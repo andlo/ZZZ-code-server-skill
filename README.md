@@ -1,17 +1,40 @@
-# <img src="https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/robot.svg" card_color="#22A7F0" width="50" height="50" style="vertical-align:bottom"/> Code Server
-
+# <img src='theia.png' card_color='#40DBB0' width='50' style='vertical-align:bottom'/> Code-Server
+Run VS Code on your Mycroft device and access it in a browser.
 
 ## About
+This skill installs code-server on your Mycroft device. Code-server is VS Code in a browser and great for 
+for making skills and programs. This skill, sets everything up for you.   
+Code-server integrate to Github, and tools like mycroft-msm and mycroft-msk directly from the integrated 
+shell.
 
+
+## How to install
+The skill isnt yet in the mycroft market.
+
+mycroft-msm install https://github.com/andlo/code-server-skill.git
+```
+Skill will then install VScode. During installation it will download precompiled package and extract
+it. Machine platforms currently supportet is armv7, arm64 and amd64.
+
+After installation, there should be a log info saying "Installed code-server OK." and Mycroft should tell 
+you by voice that he has installed the skill.
+You can then open a web-browser and go to http://device:3000 where device is the hostname of the device.
+If your Mycroft device is picroft the hostname proberly is picroft. 
+
+Skillsettings on https://home.mycroft.ai/ have one checkbox for setting autostart or not.
 
 ## Examples
+* "Run code server"
+* "End code server"
+* "Restart code server"
 
 ## Credits
-andlo
+Andreas Lorensen (@andlo)
 
 ## Category
 **Productivity**
 
 ## Tags
-#Vscode
-
+#vscode
+#editor
+#dev

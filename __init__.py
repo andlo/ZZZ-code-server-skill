@@ -78,25 +78,53 @@ class CodeServer(MycroftSkill):
 
     def stop_code(self):
         self.log.info("Stopping code-server")
-        if self.settings.get("code_pid") is not None:
+        SafePath = self.file_system.path
+ #       if self.settings.get("code_pid") is not None:
+        try:
             os.killpg(self.settings.get("code_pid"), signal.SIGTERM)
-            return True
-        else:
-            return False
+        except Exception:
+            proc = subprocess.Popen('pkill -f "code-server --host"',
+                                    cwd=SafePath,
+                                    preexec_fn=os.setsid,
+                                    shell=True)
+            proc.wait()
+        self.settings["theia_pid"] = None
+        return True
+ #   else:
+ #           return False
 
+ 
     def start_code(self):
         if self.settings.get("code_pid)") is None:
             self.log.info("Starting code-server")
             SafePath = self.file_system.path
-            proc = subprocess.Popen(SafePath + '/code-server/bin/code-server ' +
+            auth = ' --auth=none'
+            if self.settings.get('use_password') is True:
+                auth = 'password' 
+                os.environ['PASSWORD'] = self.settings.get('password')
+            cert = ''
+            if self.settings.get('use_ssl') is True:
+                cert = ' --cert' 
+                os.environ['PASSWORD'] = self.settings.get('password')
+                self.log.info('Password is ' + self.settings.get('password'))
+            port = ' --port=3000'
+            if self.settings.get('portnum') is not '':
+                port = ' --port=' + str(self.settings.get('portnum'))
+            telemetry = ' --disable-telemetry'
+            if self.settings.get('telemetry') is False:
+                telemetry = ''
+
+            proc = subprocess.Popen(SafePath + '/code-server/bin/code-server' +
                                           ' --host=0.0.0.0' +
-                                          ' --port=3000' +
-                                          ' --auth=none' +
+                                          port +
+                                          auth +
                                           ' --user-data-dir=' + SafePath + '/user-data' +
                                           ' --extensions-dir=' + SafePath + '/extensions' +
                                           ' --config=' + SafePath + '/config.yaml' +
-                                          ' --force' +
-                                          ' >/dev/null 2>/dev/null ',
+                                          cert + 
+                                          telemetry +
+                                          ' --force',
+#                                          ' >/dev/null 2>/dev/null ',
                                           cwd=SafePath,
                                           preexec_fn=os.setsid, shell=True)
             self.log.info('Code-server PID=' + str(proc.pid)) 
