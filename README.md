@@ -23,6 +23,16 @@ If your Mycroft device is picroft the hostname proberly is picroft.
 
 Skillsettings on https://home.mycroft.ai/ have one checkbox for setting autostart or not.
 
+
+THIRD-PARTY SOFTWARE NOTICES AND INFORMATION
+
+1.	Microsoft/vscode version 1.47.0 (https://github.com/Microsoft/vscode)
+    MIT License 
+
+2.  Coder/code-server (https://github.com/coder/code-server)
+    MIT License 
+
+
 ## Examples
 * "Run code server"
 * "End code server"

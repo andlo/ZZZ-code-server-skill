@@ -16,8 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-
-
 from sys import platform
 from mycroft import MycroftSkill, intent_file_handler
 import os
