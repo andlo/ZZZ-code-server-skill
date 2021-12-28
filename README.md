@@ -1,4 +1,4 @@
-# <img src='favicon.svg' card_color='#40DBB0' width='100' style='vertical-align:bottom'/> Code-Server
+# <img src='vscode.png' card_color='#40DBB0' width='50' style='vertical-align:bottom'/> Code-Server
 Run VS Code on your Mycroft device and access it in a browser.
 
 ## About
@@ -27,7 +27,7 @@ There are some settings that kan be set on skill setting page on https://home.my
 ```
 THIRD-PARTY SOFTWARE NOTICES AND INFORMATION
 
-1.	Microsoft/vscode version 1.47.0 (https://github.com/Microsoft/vscode)
+1.  Microsoft/vscode version 1.47.0 (https://github.com/Microsoft/vscode)
     MIT License 
 
 2.  Coder/code-server (https://github.com/coder/code-server)
