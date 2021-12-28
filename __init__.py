@@ -21,6 +21,8 @@ from mycroft import MycroftSkill, intent_file_handler
 import os
 import subprocess
 import signal
+from shutil import copyfile
+
 
 class CodeServer(MycroftSkill):
     def __init__(self):
@@ -47,7 +49,7 @@ class CodeServer(MycroftSkill):
 
     @intent_file_handler('start.intent')
     def handle_code_start(self, message):
-        url = os.uname().nodename + ' ' + str(self.settings.get('portnum')) 
+        url = os.uname().nodename + ' ' + str(self.settings.get('portnum'))
         if self.start_code():
             self.speak_dialog('code_started', data={"url": url})
         else:
@@ -55,7 +57,7 @@ class CodeServer(MycroftSkill):
 
     @intent_file_handler('restart.intent')
     def handle_code_restart(self, message):
-        url = os.uname().nodename + ' ' + str(self.settings.get('portnum')) 
+        url = os.uname().nodename + ' ' + str(self.settings.get('portnum'))
         self.stop_code()
         if self.start_code():
             self.speak_dialog('code_started', data={"url": url})
@@ -73,18 +75,18 @@ class CodeServer(MycroftSkill):
             proc.wait()
         self.settings["code_pid"] = None
         return True
-  
+
     def start_code(self):
         if self.settings.get("code_pid)") is None:
             self.log.info("Starting code-server")
             SafePath = self.file_system.path
             auth = ' --auth=none'
             if self.settings.get('use_password') is True:
-                auth = 'password' 
+                auth = 'password'
                 os.environ['PASSWORD'] = self.settings.get('password')
             cert = ''
             if self.settings.get('use_ssl') is True:
-                cert = ' --cert' 
+                cert = ' --cert'
                 os.environ['PASSWORD'] = self.settings.get('password')
                 self.log.info('Password is ' + self.settings.get('password'))
             port = ' --port=3000'
@@ -95,18 +97,18 @@ class CodeServer(MycroftSkill):
                 telemetry = ''
 
             proc = subprocess.Popen(SafePath + '/code-server/bin/code-server' +
-                                          ' --host=0.0.0.0' +
-                                          port +
-                                          auth +
-                                          ' --user-data-dir=' + SafePath + '/user-data' +
-                                          ' --extensions-dir=' + SafePath + '/extensions' +
-                                          ' --config=' + SafePath + '/config.yaml' +
-                                          cert + 
-                                          telemetry +
-                                          ' --force',
-                                          cwd=SafePath,
-                                          preexec_fn=os.setsid, shell=True)
-            self.log.info('Code-server PID=' + str(proc.pid)) 
+                                    ' --host=0.0.0.0' +
+                                    port +
+                                    auth +
+                                    ' --user-data-dir=' + SafePath + '/user-data' +
+                                    ' --extensions-dir=' + SafePath + '/extensions' +
+                                    ' --config=' + SafePath + '/config.yaml' +
+                                    cert +
+                                    telemetry +
+                                    ' --force',
+                                    cwd=SafePath,
+                                    preexec_fn=os.setsid, shell=True)
+            self.log.info('Code-server PID=' + str(proc.pid))
             self.settings["code_pid"] = proc.pid
             return True
         else:
@@ -115,12 +117,13 @@ class CodeServer(MycroftSkill):
     def install_code(self):
         try:
             SafePath = self.file_system.path
-            file='/opt/mycroft/skills/code-server-skill.andlo/download_code-server.sh' # Need a nother way!!!
+            # Need a nother way!!!
+            file = '/opt/mycroft/skills/code-server-skill.andlo/download_code-server.sh'
             copyfile(file, SafePath + '/download_code-server.sh')
 
             proc = subprocess.Popen('bash ./download_code-server.sh armv7',
-                                   cwd=SafePath,
-                                   preexec_fn=os.setsid, shell=True)
+                                    cwd=SafePath,
+                                    preexec_fn=os.setsid, shell=True)
             proc.wait()
             self.log.info("Installed OK")
             self.settings['code-server installed'] = True
@@ -140,6 +143,6 @@ class CodeServer(MycroftSkill):
         except Exception:
             return False
 
+
 def create_skill():
     return CodeServer()
-
