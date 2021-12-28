@@ -1,4 +1,4 @@
-# <img src='favicon.svg' card_color='#40DBB0' width='50' style='vertical-align:bottom'/> Code-Server
+# <img src='favicon.svg' card_color='#40DBB0' width='100' style='vertical-align:bottom'/> Code-Server
 Run VS Code on your Mycroft device and access it in a browser.
 
 ## About
