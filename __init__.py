@@ -125,6 +125,12 @@ class CodeServer(MycroftSkill):
                                     cwd=SafePath,
                                     preexec_fn=os.setsid, shell=True)
             proc.wait()
+            proc = subprocess.Popen(SafePath + '/code-server/bin/code-server' +
+                                    ' --install-extension' +
+                                    ' ms-python.pythonport',
+                                    cwd=SafePath,
+                                    preexec_fn=os.setsid, shell=True)
+            proc.wait()
             self.log.info("Installed OK")
             self.settings['code-server installed'] = True
             self.speak_dialog('installed_OK')
